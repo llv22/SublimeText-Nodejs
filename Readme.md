@@ -10,7 +10,7 @@ Overview
 The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and tools to work with
 [nodejs](http://nodejs.org).
 
-Debugging-TODO
+Debugging
 ---------------
 * Python non-block IO for interaction of friendly-debugging
   
@@ -37,7 +37,9 @@ or using git with the below commands:
 
 Author & Contributors
 ----------------------
-[Tane Piper](http://twitter.com/tanepiper) - if you find this plugin useful then please ping me if you would like to
+[Tane Piper](http://twitter.com/tanepiper) - sponsor
+
 [Orlando Ding](http://weibo.com/orlando22) - All outputs in private time for fun, thanks for Tane's great basis framework
+
 donate to my Sublime Text 2 licence fund
 
