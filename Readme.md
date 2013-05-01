@@ -18,23 +18,6 @@ Debugging-TODO
   3, all commands in output view - [?]
 	technically core of this is to avoid eare the previous text content, is it        possible to ? have to check-up
 
-Node Commands
--------------
-You can access node commands in two ways.
-
-* Via the menu in `Tools -> Node`
-* By accessing the Command Palette and typing `node`
- 
-The current commands available are (with Windows binding, other bindings are provided):
-
-* Run current script in node (Alt + R)
-* Run current script in node debug (Alt + D)
-* Run current script in node and arguments (Ctrl + Alt + r)
-* Run current script in node debug and arguments (Ctrl + Alt + D)
-* Uglify Code
-* NPM Command
-* Build documentation (builds the completion files)
-
 Install
 -------
 You may install `Nodejs` via the [Sublime Text 2 package manager](http://wbond.net/sublime_packages/package_control),
