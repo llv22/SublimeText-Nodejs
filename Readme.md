@@ -13,7 +13,7 @@ The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and
 Screen shot
 --------------
 
-<iframe src="https://skydrive.live.com/embed?cid=43C7C9B51204E220&resid=43C7C9B51204E220%211273&authkey=ALbixSFKqw9-q6I" width="319" height="188" frameborder="0" scrolling="no"></iframe>
+![debugging screen](https://skydrive.live.com/embed?cid=43C7C9B51204E220&resid=43C7C9B51204E220%211273&authkey=ALbixSFKqw9-q6I)
 
 Debugging
 ---------------
