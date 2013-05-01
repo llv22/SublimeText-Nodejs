@@ -13,7 +13,7 @@ The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and
 Screen shot
 --------------
 
-![debugging screen](https://skydrive.live.com/embed?cid=43C7C9B51204E220&resid=43C7C9B51204E220%211273&authkey=ALbixSFKqw9-q6I)
+![debugging screen](https://github.com/llv22/SublimeText-Nodejs/blob/master/screenshots/Screenshot.jpg)
 
 Debugging
 ---------------
@@ -26,6 +26,10 @@ Debugging
   *3, all commands in output view - [?]*
 
 	*technically core of this is to avoid eare the previous text content, is it possible to ? have to check-up*
+
+Status
+--------------
+In development of v0, not ready for release
 
 Install
 -------
