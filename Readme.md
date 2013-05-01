@@ -41,9 +41,8 @@ or using git with the below commands:
 
 Author & Contributors
 ----------------------
-[Tane Piper](http://twitter.com/tanepiper) - sponsor
+[Tane Piper](http://twitter.com/tanepiper) - Sponsor, donate to my Sublime Text 2 licence fund
 
 [Orlando Ding](http://weibo.com/orlando22) - All outputs in private time for fun, thanks for Tane's great basis framework
 
-donate to my Sublime Text 2 licence fund
 
