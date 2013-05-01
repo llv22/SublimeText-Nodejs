@@ -2,8 +2,18 @@ import os
 import subprocess
 import sublime
 import sublime_plugin
+import re
 
+import sys
+if sys.modules.has_key('lib.command_thread'):
+  del sys.modules['lib.command_thread']
+if sys.modules.has_key('lib.command_logging'):
+  del sys.modules['lib.command_logging']
+if sys.modules.has_key('lib'):
+  del sys.modules['lib']
+import lib
 from lib.command_thread import CommandThread
+from lib.command_logging import LogEntry
 
 # when sublime loads a plugin it's cd'd into the plugin directory. Thus
 # __file__ is useless for my purposes. What I want is "Packages/Git", but
@@ -11,6 +21,8 @@ from lib.command_thread import CommandThread
 # Fun discovery: Sublime on windows still requires posix path separators.
 PLUGIN_DIRECTORY = os.getcwd().replace(os.path.normpath(os.path.join(os.getcwd(), '..', '..')) + os.path.sep, '').replace(os.path.sep, '/')
 PLUGIN_PATH = os.getcwd().replace(os.path.join(os.getcwd(), '..', '..') + os.path.sep, '').replace(os.path.sep, '/')
+# debugging command for reference
+DEBUG_COMMANDS = ["run (r)", "cont (c)", "next (n)", "step (s)", "out (o)", "backtrace (bt)", "setBreakpoint (sb)", "clearBreakpoint (cb)", "watch", "unwatch", "watchers", "repl", "restart", "kill", "list", "scripts", "breakOnException", "breakpoints", "version"]
 
 def open_url(url):
   sublime.active_window().run_command('open_url', {"url": url})
@@ -38,7 +50,9 @@ class NodeCommand(sublime_plugin.TextCommand):
     if not callback:
       callback = self.generic_done
 
+    # using thread for process interaction
     thread = CommandThread(command, callback, **kwargs)
+    self.thread = thread
     thread.start()
 
     if show_status:
@@ -59,7 +73,36 @@ class NodeCommand(sublime_plugin.TextCommand):
     output_file.insert(edit, 0, output)
     output_file.end_edit(edit)
 
+  # in order to support appended into the end of text, orlando, 2013-04-30
+  def _output_append_to_view_and_scrollend(self, output_file, output, clear=False, syntax="Packages/JavaScript/JavaScript.tmLanguage"):
+    output_file.set_syntax_file(syntax)
+    edit = output_file.begin_edit()
+    if clear:
+      region = sublime.Region(0, self.output_view.size())
+      output_file.erase(edit, region)
+    output_file.insert(edit, self.output_view.size(), output)
+    output_file.end_edit(edit)
+    self.output_view.show(self.output_view.size())
+
+  # clean console
+  def _clear_output_view(self):
+    if not hasattr(self, 'output_view'):
+      self.output_view = self.get_window().get_output_panel("git")
+    edit = self.output_view.begin_edit()
+    region = sublime.Region(0, self.output_view.size())
+    self.output_view.erase(edit, region)
+
   def scratch(self, output, title=False, **kwargs):
+    scratch_file = self.get_window().new_file()
+    if title:
+      scratch_file.set_name(title)
+    scratch_file.set_scratch(True)
+    self._output_to_view(scratch_file, output, **kwargs)
+    scratch_file.set_read_only(True)
+    return scratch_file
+
+  # debugging for scratching
+  def scratch_debug(self, output, title=False, **kwargs):
     scratch_file = self.get_window().new_file()
     if title:
       scratch_file.set_name(title)
@@ -75,6 +118,19 @@ class NodeCommand(sublime_plugin.TextCommand):
     self._output_to_view(self.output_view, output, clear=True, **kwargs)
     self.output_view.set_read_only(True)
     self.get_window().run_command("show_panel", {"panel": "output.git"})
+    # move focus to show_panel - invalid
+    self.get_window().focus_view(self.output_view)
+
+  # python script for debugging case - http://www.sublimetext.com/docs/2/api_reference.html
+  def panel_debug(self, output, **kwargs):
+    if not hasattr(self, 'output_view'):
+      self.output_view = self.get_window().get_output_panel("git")
+    self.output_view.set_read_only(False)
+    self._output_append_to_view_and_scrollend(self.output_view, output, clear=False, **kwargs)
+    self.output_view.set_read_only(True)
+    self.get_window().run_command("show_panel", {"panel": "output.git"})
+    # move focus to show_panel - invalid
+    self.get_window().focus_view(self.output_view)
 
   def quick_panel(self, *args, **kwargs):
     self.get_window().show_quick_panel(*args, **kwargs)
@@ -176,6 +232,9 @@ class NodeRunCommand(NodeTextCommand):
 # Command to run node with debug
 class NodeDrunCommand(NodeTextCommand):
   def run(self, edit):
+    # clear-up debug console
+    # LogEntry.getInstance().debug("clean output UI")
+    self._clear_output_view()
     command = """kill -9 `ps -ef | grep node | grep -v grep | awk '{print $2}'`"""
     os.system(command)
     command = ['node', 'debug', self.view.file_name()]
@@ -184,11 +243,27 @@ class NodeDrunCommand(NodeTextCommand):
   def command_done(self, result):
     s = sublime.load_settings("Nodejs.sublime-settings")
     if s.get('output_to_new_tab'):
-      self.scratch(result, title="Node Output", syntax="Packages/JavaScript/JavaScript.tmLanguage")
+      self.scratch_debug(result, title="Node Output", syntax="Packages/JavaScript/JavaScript.tmLanguage")
     else:
-      self.panel(result)
+      self.panel_debug(result)
+    self.quick_panel(DEBUG_COMMANDS, self.on_input_debug, sublime.MONOSPACE_FONT)
 
-# Command to run node with arguments
+  def on_input_debug(self, command):
+    if command == -1:
+      return
+    if not hasattr(self, 'output_view'):
+      self.output_view = self.get_window().get_output_panel("git")
+    self.output_view.set_read_only(False)
+    debug_inui = "debug> %s\n" % (DEBUG_COMMANDS[command])
+    self._output_append_to_view_and_scrollend(self.output_view, debug_inui, clear=False)
+    self.output_view.set_read_only(True)
+    # interaction with process
+    if not (self.thread is None):
+      c = re.sub(r'\([^)]*\)', '', DEBUG_COMMANDS[command]).strip()
+      self.thread.rundcommand(c)
+
+""" Command to run node with arguments
+"""
 class NodeRunArgumentsCommand(NodeTextCommand):
   def run(self, edit):
     self.get_window().show_input_panel("Arguments", "", self.on_input, None, None)

@@ -3,7 +3,10 @@
   "save_first": true,
   // if present, use this command instead of plain "node"
   // e.g. "/usr/bin/node" or "C:\bin\node.exe"
-  "node_command": false,
+  "node_command": "/usr/local/bin/node",
+  // testing purpose for debugging
+  // "output_to_new_tab": true,
+  // "node_command": false,
   // Same for NPM command
   "npm_command": false,
 
