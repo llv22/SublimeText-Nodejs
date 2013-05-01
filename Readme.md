@@ -13,9 +13,9 @@ The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and
 Debugging-TODO
 ---------------
 * Python non-block IO for interaction of friendly-debugging
-  1, basic debugging with subprocess interaction - [almost done]
-  2, code refactoring and short-cut command to invoke menu - [?]
-  3, all commands in output view - [?]
+  *1, basic debugging with subprocess interaction - [almost done]*
+  *2, code refactoring and short-cut command to invoke menu - [?]*
+  *3, all commands in output view - [?]*
 	technically core of this is to avoid eare the previous text content, is it        possible to ? have to check-up
 
 Install
