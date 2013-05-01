@@ -10,6 +10,10 @@ Overview
 The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and tools to work with
 [nodejs](http://nodejs.org).
 
+Screen shot
+--------------
+![Debugging console](http://sdrv.ms/11BKskZ)
+
 Debugging
 ---------------
 * Python non-block IO for interaction of friendly-debugging
