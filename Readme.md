@@ -3,23 +3,20 @@ Nodejs Sublime Text 2 Package
 
 # PROJECT LOOKING FOR NEW MAINTAINER
 
-Since I started this project, I've not really know where to take it past the initial few versions I released. As such
-I am no longer maintaining this project - nor do I have the time to look into some of the existing issues.
-
-If anyone would be interested in taking over this project to maintain - and hopefully take it somewhere, then please get
-in touch.
+This project is on top of tanepiper's SublimeText-Nodejs. I'd like to add javascript debugging into sublime text 2. No plan for Sublime Text 3 now.
 
 Overview
 --------
 The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and tools to work with
 [nodejs](http://nodejs.org).
 
-Code Completion
+Debugging-TODO
 ---------------
-The package code completion is generated from the main nodejs libraries and global namespaces. To invoke
-the code completion start typing the namespace you want (For example, type `fs`) and then Ctrl + Space, you get this:
-
-![A picture of the file system context menu](http://i.imgur.com/ZCFcC.png)
+* Python non-block IO for interaction of friendly-debugging
+  1, basic debugging with subprocess interaction - [almost done]
+  2, code refactoring and short-cut command to invoke menu - [?]
+  3, all commands in output view - [?]
+	technically core of this is to avoid eare the previous text content, is it        possible to ? have to check-up
 
 Node Commands
 -------------
@@ -38,15 +35,6 @@ The current commands available are (with Windows binding, other bindings are pro
 * NPM Command
 * Build documentation (builds the completion files)
 
-Snippets
-----------------
-Also included are some boilerplate snippets.  They include functionality such as a http server,
-reading the contents of a directory, etc.
-
-To access these snippets type `node` in your editor followed by Ctrl + Space
-
-If you have any boilerplate code you would like to see in here, get in touch.
-
 Install
 -------
 You may install `Nodejs` via the [Sublime Text 2 package manager](http://wbond.net/sublime_packages/package_control),
@@ -60,23 +48,9 @@ or using git with the below commands:
 
     `git clone https://github.com/tanepiper/SublimeText-Nodejs "%APPDATA%\Sublime Text 2\Packages\Nodejs"`
 
-Build Systems
--------------
-PLEASE NOTE: The build system will be refactored to provide different nodejs build systems (such as jake)
-
-If you have a JavaScript file open, by selecting selecting `Tools -> Build Systems -> Nodejs` and
-then hitting Ctrl + B, you will activate the node build system on your file and node will try to run it.
-You may need to add a `path` variable to the settings object for this if your node executable is not found
-
-Todo
-----
-* Replace the Nodejs.sublime-build to work with [jake](https://github.com/mde/jake)
-* Reorganise menu structure
-* Improve code completion snippets where possible
-* Provide an interface for writing JavaScript plugins
-
 Author & Contributors
 ----------------------
 [Tane Piper](http://twitter.com/tanepiper) - if you find this plugin useful then please ping me if you would like to
+[Orlando Ding](http://weibo.com/orlando22) - All outputs in private time for fun, thanks for Tane's great basis framework
 donate to my Sublime Text 2 licence fund
 
