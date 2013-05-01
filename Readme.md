@@ -1,7 +1,7 @@
 Nodejs Sublime Text 2 Package
 =============================
 
-# PROJECT LOOKING FOR NEW MAINTAINER
+# Debugging utilities for fun
 
 This project is on top of tanepiper's SublimeText-Nodejs. I'd like to add javascript debugging into sublime text 2. No plan for Sublime Text 3 now.
 
