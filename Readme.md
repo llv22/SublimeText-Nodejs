@@ -19,6 +19,7 @@ Debugging-TODO
   *2, code refactoring and short-cut command to invoke menu - [?]*
   
   *3, all commands in output view - [?]*
+
 	technically core of this is to avoid eare the previous text content, is it        possible to ? have to check-up
 
 Install
