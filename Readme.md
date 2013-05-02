@@ -34,7 +34,7 @@ Debugging
 
 Bug lists
 ---------------
-* #1. Python singleton logging utilise with multi-time output for one single logging event (debug()..)
+  BUG-0. Python singleton logging utilise with multi-time output for one single logging event (debug()..)
 
 
 Status
