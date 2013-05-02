@@ -32,6 +32,12 @@ Debugging
   
   5, code refactoring and short-cut command to invoke menu - [?]
 
+Utilities for development
+---------------
+* Logging for python framework debugging
+  
+  status - done
+
 Bug lists
 ---------------
 * BUG-0, Python singleton logging utilise with multi-time output for one single logging event (debug()..)
