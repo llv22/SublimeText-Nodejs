@@ -20,21 +20,21 @@ Debugging
 ---------------
 * Python non-block IO for interaction of friendly-debugging
   
-  *1, basic debugging with subprocess interaction - [almost done]
+  1, basic debugging with subprocess interaction - [almost done]
   
-  *2, invoke debugging quick-show via short-cut - [?]
+  2, invoke debugging quick-show via short-cut - [?]
   
-  *3, allow to enter debug commands in output view - [?]
+  3, allow to enter debug commands in output view - [?]
 
-	*technically core of this is to avoid erase the previous text content, is it possible to ? [have to check-up]*
+	**technically core of this is to avoid erase the previous text content, is it possible to ? [have to check-up]*
   
-  *4, allow to enter debug commands in output view - [?]
+  4, allow to enter debug commands in output view - [?]
   
-  *5, code refactoring and short-cut command to invoke menu - [?]
+  5, code refactoring and short-cut command to invoke menu - [?]
 
 Bug lists
 ---------------
-* #1. Python singleton logging utilise with multi-time output for one single logging event (debug()..)
+#1. Python singleton logging utilise with multi-time output for one single logging event (debug()..)
 
 
 Status
