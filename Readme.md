@@ -13,7 +13,7 @@ The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and
 Screen shot
 --------------
 
-![debugging screen](https://github.com/llv22/SublimeText-Nodejs/blob/master/screenshots/Screenshot.jpg)
+![debugging screen](https://raw.github.com/llv22/SublimeText-Nodejs/master/screenshots/Screenshot.jpg)
 
 Debugging
 ---------------
