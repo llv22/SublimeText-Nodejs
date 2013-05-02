@@ -5,8 +5,12 @@ import threading
 import subprocess
 import time
 import fcntl
+import inspect
 # replace inprinter character in python
 import string
+import sys
+if sys.modules.has_key('command_logging'):
+  del sys.modules['command_logging']
 from command_logging import LogEntry
 
 def main_thread(callback, *args, **kwargs):
@@ -35,21 +39,18 @@ class CommandThread(threading.Thread):
 
   def worker(self):
     # see non-block io programming for subprocess - http://stackoverflow.com/questions/375427/non-blocking-read-on-a-subprocess-pipe-in-python
-    fd = self.proc.stdout.fileno()
-    fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-    fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
-    lastline = ""
+    flags = self.proc.stdout.fileno()
+    fl = fcntl.fcntl(flags, fcntl.F_GETFL)
+    fcntl.fcntl(flags, fcntl.F_SETFL, fl | os.O_NONBLOCK)
     while not self.proc.poll():
       try:
         # see http://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python
         for line in iter(self.proc.stdout.readline, ''):
           line = filter(lambda x: x in string.printable, line)
-          if (lastline != line) :
-            lastline = line
-            main_thread(self.on_done, _make_text_safeish(line, self.fallback_encoding))
-            LogEntry.getInstance().debug("in of reading new line - %s" % (line))
+          LogEntry.getInstance().debug("(%s) %s" % (self.stacktrace(), line))
+          main_thread(self.on_done, _make_text_safeish(line, self.fallback_encoding))
       except:
-        time.sleep(1) 
+        time.sleep(1)
 
   def run(self):
     try:
@@ -90,3 +91,18 @@ class CommandThread(threading.Thread):
       # LogEntry.getInstance().debug("runcommand for stdin - " + dcommand)
       self.proc.stdin.write(dcommand + "\n")
       self.proc.stdin.flush()
+
+  def killself(self):
+    if self.proc:
+      self.proc.terminate()
+
+  """ __line__, __function__ in python  
+  see http://stackoverflow.com/questions/6810999/how-to-determine-file-function-and-line-number
+  """ 
+  def stacktrace(self):
+    # 0 represents this line, 1 represents line at caller
+    callerframerecord = inspect.stack()[1]                    
+    frame = callerframerecord[0]
+    info = inspect.getframeinfo(frame)
+    cstack = ("%s %s l:%s") % (info.filename, info.function, info.lineno)
+    return cstack

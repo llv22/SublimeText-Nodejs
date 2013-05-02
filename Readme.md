@@ -36,6 +36,7 @@ Bug lists
 ---------------
 * BUG-0, Python singleton logging utilise with multi-time output for one single logging event (debug()..)
 
+  status - fixed
 
 Status
 --------------
@@ -59,5 +60,4 @@ Author & Contributors
 [Tane Piper](http://twitter.com/tanepiper) - Sponsor, donate to my Sublime Text 2 licence fund
 
 [Orlando Ding](http://weibo.com/orlando22) - All outputs in private time for fun, thanks for Tane's great basis framework
-
 
