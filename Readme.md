@@ -12,6 +12,7 @@ The Nodejs Sublime Text 2 Package provides a set of code completion, scripts and
 
 Screen shot
 --------------
+when you invoke ctrl+D for javascript debugging, after debugging start, you will see quick-screen in your javascript view. just select item then output will be displayed in output view.
 
 ![debugging screen](https://raw.github.com/llv22/SublimeText-Nodejs/master/screenshots/Screenshot.jpg)
 
@@ -19,13 +20,22 @@ Debugging
 ---------------
 * Python non-block IO for interaction of friendly-debugging
   
-  *1, basic debugging with subprocess interaction - [almost done]*
+  *1, basic debugging with subprocess interaction - [almost done]
   
-  *2, code refactoring and short-cut command to invoke menu - [?]*
+  *2, invoke debugging quick-show via short-cut - [?]
   
-  *3, all commands in output view - [?]*
+  *3, allow to enter debug commands in output view - [?]
 
-	*technically core of this is to avoid eare the previous text content, is it possible to ? have to check-up*
+	*technically core of this is to avoid erase the previous text content, is it possible to ? [have to check-up]*
+  
+  *4, allow to enter debug commands in output view - [?]
+  
+  *5, code refactoring and short-cut command to invoke menu - [?]
+
+Bug lists
+---------------
+* #1. Python singleton logging utilise with multi-time output for one single logging event (debug()..)
+
 
 Status
 --------------
