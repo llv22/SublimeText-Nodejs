@@ -42,7 +42,19 @@ Bug lists
 ---------------
 * BUG-0, Python singleton logging utilise with multi-time output for one single logging event (debug()..)
 
+  status - find root reason
+
+  reason - when using ctrl+D repeatedly in console, LogEntry.getInstance() will be create again, however, the existing instance still be invoked
+
+  solution - ? In progress
+
+  workaround - quit sublime framework, and reload to guarantee the existing instance of logger has been fanlized
+
+* BUG-1, AttributeError: 'NoneType' object has no attribute 'sleep' in command_thread.py line 60
+
   status - fixed
+
+  solution - see reference in https://github.com/chartbeat/mongo-python-driver/commit/a3ee17cadc6811538fdda5c3b8c9942a1a25d2bd. control exception via boolean, and sleep not in handling exception loop [? why, to check python source code of exception handling]
 
 Status
 --------------
