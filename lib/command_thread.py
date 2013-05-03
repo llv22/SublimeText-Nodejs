@@ -42,15 +42,22 @@ class CommandThread(threading.Thread):
     flags = self.proc.stdout.fileno()
     fl = fcntl.fcntl(flags, fcntl.F_GETFL)
     fcntl.fcntl(flags, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+    ex = True
     while not self.proc.poll():
       try:
+        ex = False
         # see http://stackoverflow.com/questions/92438/stripping-non-printable-characters-from-a-string-in-python
         for line in iter(self.proc.stdout.readline, ''):
           line = filter(lambda x: x in string.printable, line)
           LogEntry.getInstance().debug("(%s) %s" % (self.stacktrace(), line))
           main_thread(self.on_done, _make_text_safeish(line, self.fallback_encoding))
       except:
-        time.sleep(1)
+        ex = True
+      finally:
+        if ex:
+          # bug - AttributeError: 'NoneType' object has no attribute 'sleep'
+          # https://github.com/chartbeat/mongo-python-driver/commit/a3ee17cadc6811538fdda5c3b8c9942a1a25d2bd
+          time.sleep(1)
 
   def run(self):
     try:
@@ -104,5 +111,5 @@ class CommandThread(threading.Thread):
     callerframerecord = inspect.stack()[1]                    
     frame = callerframerecord[0]
     info = inspect.getframeinfo(frame)
-    cstack = ("%s %s l:%s") % (info.filename, info.function, info.lineno)
+    cstack = ("%s %s:%s") % (info.filename, info.function, info.lineno)
     return cstack

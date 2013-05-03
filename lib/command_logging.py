@@ -1,4 +1,5 @@
 import logging
+import string
 
 class LogEntry(object):
 	_singletons = {}
@@ -16,7 +17,8 @@ class LogEntry(object):
 			logger.setLevel(logging.DEBUG)
 			proxy.logger = logger
 			cls._singletons[cls] = proxy
-			_singleton = proxy
+			# must give value for singleton of python, here - have to refine for thread-safety
+			LogEntry._singleton = proxy
 		return cls._singletons[cls]
 
 	@staticmethod
@@ -29,6 +31,6 @@ class LogEntry(object):
 	"""
 	def debug(self, info):
 		proxy = LogEntry.getInstance()
-		logstr = "[t-%s] %s " % (LogEntry.record, info)
+		logstr = "[%s] %s " % (LogEntry.record, info.rstrip(string.whitespace))
 		proxy.logger.debug(logstr)
 		LogEntry.record = LogEntry.record + 1
