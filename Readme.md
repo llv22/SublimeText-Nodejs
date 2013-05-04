@@ -48,8 +48,6 @@ Bug lists
 
   solution - check handlers length and force to skip
 
-  workaround - quit sublime framework, and reload to guarantee the existing instance of logger has been fanlized
-
 * BUG-1, AttributeError: 'NoneType' object has no attribute 'sleep' in command_thread.py line 60
 
   status - fixed
