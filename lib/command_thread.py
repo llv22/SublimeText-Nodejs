@@ -57,7 +57,8 @@ class CommandThread(threading.Thread):
         if ex:
           # bug - AttributeError: 'NoneType' object has no attribute 'sleep'
           # https://github.com/chartbeat/mongo-python-driver/commit/a3ee17cadc6811538fdda5c3b8c9942a1a25d2bd
-          time.sleep(1)
+          # change 1 to 0.6 for better reaction in UI
+          time.sleep(0.6)
 
   def run(self):
     try:

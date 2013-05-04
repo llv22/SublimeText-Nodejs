@@ -44,9 +44,9 @@ Bug lists
 
   status - find root reason
 
-  reason - when using ctrl+D repeatedly in console, LogEntry.getInstance() will be create again, however, the existing instance still be invoked
+  reason - when using ctrl+D repeatedly in console, LogEntry.getInstance() will be create again, however, the existing instance still be invoked. multi-handler will be instantiated repeatedly, so add handlers check-up
 
-  solution - ? In progress
+  solution - check handlers length and force to skip
 
   workaround - quit sublime framework, and reload to guarantee the existing instance of logger has been fanlized
 
