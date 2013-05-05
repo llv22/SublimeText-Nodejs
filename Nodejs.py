@@ -15,6 +15,11 @@ import lib
 from lib.command_thread import CommandThread
 from lib.command_logging import LogEntry
 
+# enable logging for sublime events
+sublime.log_commands(True)
+
+''' Nodejs of Sublime Text 2, run original commands
+''' 
 # when sublime loads a plugin it's cd'd into the plugin directory. Thus
 # __file__ is useless for my purposes. What I want is "Packages/Git", but
 # allowing for the possibility that someone has renamed the file.
@@ -108,7 +113,7 @@ class NodeCommand(sublime_plugin.TextCommand):
       scratch_file.set_name(title)
     scratch_file.set_scratch(True)
     self._output_to_view(scratch_file, output, **kwargs)
-    scratch_file.set_read_only(True)
+    # scratch_file.set_read_only(True)
     return scratch_file
 
   def panel(self, output, **kwargs):
@@ -117,6 +122,7 @@ class NodeCommand(sublime_plugin.TextCommand):
     self.output_view.set_read_only(False)
     self._output_to_view(self.output_view, output, clear=True, **kwargs)
     self.output_view.set_read_only(True)
+    self.output_view.set_name("debug_outputview")
     self.get_window().run_command("show_panel", {"panel": "output.git"})
     # move focus to show_panel - invalid
     self.get_window().focus_view(self.output_view)
@@ -125,9 +131,11 @@ class NodeCommand(sublime_plugin.TextCommand):
   def panel_debug(self, output, **kwargs):
     if not hasattr(self, 'output_view'):
       self.output_view = self.get_window().get_output_panel("git")
+    self.output_view.set_name("debug_outputview")
     self.output_view.set_read_only(False)
     self._output_append_to_view_and_scrollend(self.output_view, output, clear=False, **kwargs)
-    self.output_view.set_read_only(True)
+    # can we capature events here?
+    # self.output_view.set_read_only(True)
     self.get_window().run_command("show_panel", {"panel": "output.git"})
     # move focus to show_panel - invalid
     self.get_window().focus_view(self.output_view)
@@ -402,3 +410,42 @@ class NodeUglifyCommand(NodeTextCommand):
       self.scratch(result, title="Node Output", syntax="Packages/JavaScript/JavaScript.tmLanguage")
     else:
       self.panel(result)
+
+''' Debugging console for Nodejs of Sublime Text 2, Orlando, 2013-05
+''' 
+
+# core implemention for CaptureEditing
+# see discussion - http://www.sublimetext.com/forum/viewtopic.php?f=6&t=10457
+# see mouse event - https://github.com/SublimeText/MouseEventListener/blob/master/mouse_event_listener.py
+class CaptureEditing(sublime_plugin.EventListener):
+  edit_info = {}
+
+  # check-up if current view is output panel for our debugging
+  def __isNodeJsDebugOutputView(self, view):
+    if not view: 
+      return False
+    return (view is not None and view.name == "debug_outputview")
+
+  def on_modified(self, view):
+    if not self.__isNodeJsDebugOutputView(view):
+      # I only want to use views, not the input-panel, etc..
+      return
+    if not CaptureEditing.edit_info.has_key(vid):
+      # create a dictionary entry based on the current views' id
+      CaptureEditing.edit_info[vid] = {}
+    cview = CaptureEditing.edit_info[vid]
+    # I can now store details of the current edit in the edit_info dictionary, via cview.
+
+  def on_query_context(self, view, key, operator, operand, match_all):
+    # query nodejs_drun and panel, then give for on_modified
+    print "on_query_context %s" % key
+
+# # click for only for this js project
+# class NodejsDebugClick(sublime_plugin.TextCommand):
+#   def run(self, args):
+#     print "NodejsDebugClick"
+
+# # double-click for only for this js project
+# class NodejsDebugDoubleClick(sublime_plugin.TextCommand):
+#   def run(self, args):
+#     print "NodejsDebugDoubleClick"

@@ -96,7 +96,6 @@ class CommandThread(threading.Thread):
     if (self.proc is None):
       return
     else:
-      # LogEntry.getInstance().debug("runcommand for stdin - " + dcommand)
       self.proc.stdin.write(dcommand + "\n")
       self.proc.stdin.flush()
 
