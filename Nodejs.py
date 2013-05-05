@@ -424,12 +424,15 @@ class CaptureEditing(sublime_plugin.EventListener):
   def __isNodeJsDebugOutputView(self, view):
     if not view: 
       return False
-    return (view is not None and view.name == "debug_outputview")
+    return (view is not None and view.name() == "debug_outputview")
 
   def on_modified(self, view):
     if not self.__isNodeJsDebugOutputView(view):
       # I only want to use views, not the input-panel, etc..
-      return
+      print "hint here for return"
+      return False
+    print "hint here for submiting changes"
+    vid = view.id()
     if not CaptureEditing.edit_info.has_key(vid):
       # create a dictionary entry based on the current views' id
       CaptureEditing.edit_info[vid] = {}
@@ -438,7 +441,8 @@ class CaptureEditing(sublime_plugin.EventListener):
 
   def on_query_context(self, view, key, operator, operand, match_all):
     # query nodejs_drun and panel, then give for on_modified
-    print "on_query_context %s" % key
+    print "on_query_context - view : %s, key : %s, operator : %s, operand : %s" % (view.name(), key, operator, operand)
+    return None
 
 # # click for only for this js project
 # class NodejsDebugClick(sublime_plugin.TextCommand):
